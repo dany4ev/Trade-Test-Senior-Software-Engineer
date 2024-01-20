@@ -5,11 +5,15 @@ namespace Trade_Test.Data.EfModels
     public class TblCharacter
     {
         public int Id { get; set; }
-        [StringLength(200)]
+
+        [MaxLength(100)]
         public string? Name { get; set; }
         public int Vote { get; set; }
 
+        [MaxLength(100)]
         public string? FileType { get; set; }
-        public IEnumerable<byte>? FileData { get; set; }
+
+        [MaxLength]
+        public byte[] FileData { get; set; }
     }
 }
