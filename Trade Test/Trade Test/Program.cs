@@ -11,8 +11,8 @@ namespace Trade_Test
     public class Program
     {
         // NOTE: keeping these secrets here is not a good practice and these will be moved into some sort of web vault
-        public readonly static string TradeTestConnectionString = "";
-        public readonly static string JwtSecret = "";
+        public readonly static string TradeTestConnectionString = "Data Source=localhost;Integrated Security=True;Trust Server Certificate=True";
+        //public readonly static string JwtSecret = "";
 
         public static void Main(string[] args)
         {
