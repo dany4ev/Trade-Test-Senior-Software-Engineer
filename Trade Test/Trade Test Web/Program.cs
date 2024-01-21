@@ -21,11 +21,15 @@ namespace Trade_Test_Web
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllersWithViews();
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
-            
+                options.UseSqlServer(TradeTestConnectionString));
+
+            builder.Services.AddDbContext<TradeTestDbContext>(options => {
+                options.UseSqlServer(TradeTestConnectionString);
+            });
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -33,10 +37,6 @@ namespace Trade_Test_Web
 
             // Note: Add DI registrations for all dependencies here
             builder.Services.RegisterDependencies();
-
-            builder.Services.AddDbContext<TradeTestDbContext>(options => {
-                options.UseSqlServer(TradeTestConnectionString);
-            });
 
             builder.Services.AddMvc();
             builder.Services.AddControllers().AddNewtonsoftJson();

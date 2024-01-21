@@ -16,15 +16,15 @@ namespace Trade_Test.Data.Repositories {
                 Vote = character.Vote
             };
 
-            DbContext.Characters.Add(newCharacter);
+            DbContext.TblCharacters.Add(newCharacter);
 
-            var result = await DbContext.SaveChangesAsync();
+            var result = DbContext.SaveChanges();
 
             return result;
         }
 
         public List<Character> GetCharacters() {
-            var usersList = DbContext.Characters.Select(s => new Character {
+            var usersList = DbContext.TblCharacters.Select(s => new Character {
                 Id = s.Id,
                 Name = s.Name,
                 Vote = s.Vote
@@ -35,7 +35,7 @@ namespace Trade_Test.Data.Repositories {
 
         public async Task<int> UpdateCharacterAsync(Character characterData) {
 
-            var savedCharacter = await DbContext.Characters.FindAsync(characterData.Id);
+            var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
 
             if (savedCharacter != null) {
                 
@@ -44,7 +44,7 @@ namespace Trade_Test.Data.Repositories {
                     Vote = savedCharacter.Vote
                 };
 
-                DbContext.Characters.Update(savedCharacter);
+                DbContext.TblCharacters.Update(savedCharacter);
             }
 
             var result = await DbContext.SaveChangesAsync();
@@ -54,7 +54,7 @@ namespace Trade_Test.Data.Repositories {
 
         public async Task<int> VoteForCharacterAsync(Character characterData) {
 
-            var savedCharacter = await DbContext.Characters.FindAsync(characterData.Id);
+            var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
 
             if (savedCharacter != null) {
 
@@ -62,7 +62,7 @@ namespace Trade_Test.Data.Repositories {
                     Vote = savedCharacter.Vote
                 };
 
-                DbContext.Characters.Update(savedCharacter);
+                DbContext.TblCharacters.Update(savedCharacter);
             }
 
             var result = await DbContext.SaveChangesAsync();

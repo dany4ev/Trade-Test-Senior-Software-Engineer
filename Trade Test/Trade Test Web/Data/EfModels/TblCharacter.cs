@@ -14,6 +14,8 @@ namespace Trade_Test.Data.EfModels
         public string? FileType { get; set; }
 
         [MaxLength]
-        public byte[] FileData { get; set; }
+        public byte[]? FileData { get; set; }
+
+        public DateTimeOffset? CreatedDateTime { get; set; }
     }
 }
