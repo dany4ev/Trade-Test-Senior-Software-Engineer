@@ -4,11 +4,12 @@ using Trade_Test.Models;
 
 namespace Trade_Test.Data.Repositories {
     public class CharacterRepository : ICharacterRepository {
+
+        private readonly TradeTestDbContext DbContext;
+
         public CharacterRepository(TradeTestDbContext dbContext) {
             DbContext = dbContext;
         }
-
-        public TradeTestDbContext DbContext { get; }
 
         public void AddCharacter(Character character) {
             TblCharacter newCharacter = new() {

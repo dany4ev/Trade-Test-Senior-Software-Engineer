@@ -15,6 +15,7 @@ namespace Trade_Test.Services {
 
         public void AddCharacter(Character character) {
             _unitOfWork.CharacterRepository.AddCharacter(character);
+            _unitOfWork.SaveAsync();
         }
 
         public Character GetCharacter(int id) {
@@ -27,12 +28,14 @@ namespace Trade_Test.Services {
             return result;
         }
 
-        public void UpdateCharacterAsync(Character character) {
-            var result = _unitOfWork.CharacterRepository.UpdateCharacterAsync(character);
+        public async void UpdateCharacterAsync(Character character) {
+            await  _unitOfWork.CharacterRepository.UpdateCharacterAsync(character);
+            await _unitOfWork.SaveAsync();
         }
 
-        public void VoteForCharacterAsync(Character character) {
-            var result = _unitOfWork.CharacterRepository.VoteForCharacterAsync(character);
+        public async void VoteForCharacterAsync(Character character) {
+            await _unitOfWork.CharacterRepository.VoteForCharacterAsync(character);
+            await _unitOfWork.SaveAsync();
         }
     }
 }
