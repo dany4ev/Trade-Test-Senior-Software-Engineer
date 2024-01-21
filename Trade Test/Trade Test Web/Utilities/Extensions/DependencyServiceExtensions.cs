@@ -1,9 +1,13 @@
-﻿using Trade_Test.Data.Repositories;
+﻿using Microsoft.AspNetCore.Identity;
+
+using Trade_Test.Data.Repositories;
 using Trade_Test.Data.Repositories.Interfaces;
 using Trade_Test.Data.UnitOfWork;
+using Trade_Test.Models;
 using Trade_Test.Services;
 using Trade_Test.Services.Interfaces;
 
+using Trade_Test_Web.Data.EfModels;
 using Trade_Test_Web.Utilities.Middlewares;
 
 namespace Trade_Test.Utilities.Extensions
@@ -21,6 +25,9 @@ namespace Trade_Test.Utilities.Extensions
             services.AddTransient<IAdminRepository, AdminRepository>();
 
             services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
+            services.AddTransient<UserManager<User>>();
+            services.AddTransient<ApplicationDbContext>();
         }
     }
 }

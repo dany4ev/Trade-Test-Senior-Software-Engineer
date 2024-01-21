@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using Trade_Test.Data.EfModels;
 using Trade_Test.Data.Repositories;
 using Trade_Test.Data.Repositories.Interfaces;
+using Trade_Test.Models;
 
 using Trade_Test_Web.Data.EfModels;
 
@@ -10,6 +12,7 @@ namespace Trade_Test.Data.UnitOfWork {
     public class UnitOfWork : IUnitOfWork {
         #region Object Initialized
 
+        protected readonly UserManager<User> _userManager;
         protected readonly ApplicationDbContext _applicationDbContext;
         protected readonly TradeTestDbContext _tradeTestDbContext;
         private bool _disposed;
@@ -18,9 +21,12 @@ namespace Trade_Test.Data.UnitOfWork {
 
 
         public UnitOfWork(
+            UserManager<User> userManager,
             ApplicationDbContext ApplicationDbContext,
             TradeTestDbContext TradeTestDbContext
             ) {
+
+            _userManager = userManager;
 
             _applicationDbContext = ApplicationDbContext;
             _applicationDbContext.Database.SetCommandTimeout(999);
@@ -33,7 +39,7 @@ namespace Trade_Test.Data.UnitOfWork {
         public IAdminRepository AdminRepository {
             get
             {
-                _adminRepository ??= new AdminRepository(_applicationDbContext);
+                _adminRepository ??= new AdminRepository(_applicationDbContext, _userManager);
                 return _adminRepository;
             }
         }
