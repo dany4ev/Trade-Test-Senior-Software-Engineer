@@ -5,14 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Trade_Test.Data.EfModels;
 using Trade_Test.Utilities.Extensions;
 using Trade_Test_Web.Data.EfModels;
+using Trade_Test_Web.Utilities.Middlewares;
 
 namespace Trade_Test_Web
 {
     public class Program {
 
-        //Server=(localdb)\\mssqllocaldb;Database=aspnet-Trade_Test_Web-c517d245-dd7c-4027-995c-69e205d63d06;Trusted_Connection=True;MultipleActiveResultSets=true
-        // NOTE: keeping these secrets here is not a good practice and these will be moved into some sort of web vault
-        public readonly static string TradeTestConnectionString = "Data Source=localhost;Integrated Security=True;Trust Server Certificate=True";
+        
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +20,9 @@ namespace Trade_Test_Web
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllersWithViews();
 
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            
+            // NOTE: keeping these secrets here is not a good practice and these will be moved into some sort of web vault
+            var TradeTestConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TradeTestConnectionString));
 
@@ -69,7 +69,7 @@ namespace Trade_Test_Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

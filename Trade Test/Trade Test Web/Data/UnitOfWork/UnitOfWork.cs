@@ -14,29 +14,27 @@ namespace Trade_Test.Data.UnitOfWork {
         protected readonly ApplicationDbContext _applicationDbContext;
         protected readonly TradeTestDbContext _tradeTestDbContext;
         private bool _disposed;
-        public IConfigurationService _configurationService { get; set; }
         private IAdminRepository? _adminRepository;
         private ICharacterRepository? _characterRepository;
 
 
         public UnitOfWork(
             ApplicationDbContext ApplicationDbContext,
-            TradeTestDbContext TradeTestDbContext,
-            IConfigurationService configurationService
+            TradeTestDbContext TradeTestDbContext
             ) {
+
             _applicationDbContext = ApplicationDbContext;
             _applicationDbContext.Database.SetCommandTimeout(999);
+         
             _tradeTestDbContext = TradeTestDbContext;
             _tradeTestDbContext.Database.SetCommandTimeout(999);
-            _configurationService = configurationService;
         }
 
 
         public IAdminRepository AdminRepository {
             get
             {
-                if (_adminRepository == null)
-                    _adminRepository = new AdminRepository(_applicationDbContext);
+                _adminRepository ??= new AdminRepository(_applicationDbContext);
                 return _adminRepository;
             }
         }
@@ -44,8 +42,7 @@ namespace Trade_Test.Data.UnitOfWork {
         public ICharacterRepository CharacterRepository {
             get
             {
-                if (_characterRepository == null)
-                    _characterRepository = new CharacterRepository(_tradeTestDbContext);
+                _characterRepository ??= new CharacterRepository(_tradeTestDbContext);
                 return _characterRepository;
             }
         }
