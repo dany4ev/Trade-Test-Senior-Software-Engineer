@@ -16,7 +16,7 @@ namespace Trade_Test.Data.Repositories {
                 Vote = character.Vote
             };
 
-            DbContext.Add(newCharacter);
+            DbContext.Characters.Add(newCharacter);
 
             var result = await DbContext.SaveChangesAsync();
 
