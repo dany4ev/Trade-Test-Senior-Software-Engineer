@@ -16,6 +16,10 @@ namespace Trade_Test.Services {
             return result;
         }
 
+        public Character GetCharacter(int id) {
+            return _characterRepository.GetCharacter(id);
+        }
+
         public List<Character> GetCharacters() {
             return _characterRepository.GetCharacters();
         }

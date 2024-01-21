@@ -18,11 +18,22 @@ namespace Trade_Test.Controllers {
 
         public ActionResult Index() {
 
+            ViewBag.PageName = "Disney Character List";
+
             var charactersList = _characterService.GetCharacters();
 
             return View(charactersList);
         }
 
+
+        public ActionResult CharacterDetail(int id) {
+
+            ViewBag.PageName = "Character Detail";
+
+            var character = _characterService.GetCharacter(id);
+
+            return View(character);
+        }
 
         public ActionResult AddCharacter() {
 

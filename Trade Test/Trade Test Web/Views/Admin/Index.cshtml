@@ -4,7 +4,9 @@
 @using Trade_Test.Models;
 @model List<User>
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <a href="@Url.Action("AddUser","Admin")">Add User</a>
 <div class="row">
     <div class="col-md-12">

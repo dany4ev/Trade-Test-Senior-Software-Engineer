@@ -8,7 +8,7 @@ namespace Trade_Test.Data.EfModels
 
         [MaxLength(100)]
         public string? Name { get; set; }
-        public int Vote { get; set; }
+        public int? Vote { get; set; }
 
         [MaxLength(100)]
         public string? FileType { get; set; }
@@ -17,5 +17,6 @@ namespace Trade_Test.Data.EfModels
         public byte[]? FileData { get; set; }
 
         public DateTimeOffset? CreatedDateTime { get; set; }
+        public DateTimeOffset? ModifiedDateTime { get; set; }
     }
 }
