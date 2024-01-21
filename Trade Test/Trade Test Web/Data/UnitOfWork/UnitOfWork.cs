@@ -3,7 +3,6 @@
 using Trade_Test.Data.EfModels;
 using Trade_Test.Data.Repositories;
 using Trade_Test.Data.Repositories.Interfaces;
-using Trade_Test.Services.Interfaces;
 
 using Trade_Test_Web.Data.EfModels;
 
