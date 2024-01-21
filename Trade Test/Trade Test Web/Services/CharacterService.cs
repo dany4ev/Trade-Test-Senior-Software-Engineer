@@ -1,39 +1,38 @@
-﻿using Trade_Test.Data.Repositories.Interfaces;
+﻿using Trade_Test.Data.UnitOfWork;
 using Trade_Test.Models;
 using Trade_Test.Services.Interfaces;
 
 namespace Trade_Test.Services {
     public class CharacterService : ICharacterService {
 
-        private readonly ICharacterRepository _characterRepository;
-        public CharacterService(ICharacterRepository characterRepository) {
-            _characterRepository = characterRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        public CharacterService(
+            IUnitOfWork unitOfWork
+            ) {
+
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<int> AddCharacterAsync(Character character) {
-            var result = _characterRepository.AddCharacterAsync(character);
-
-            return result;
+        public void AddCharacter(Character character) {
+            _unitOfWork.CharacterRepository.AddCharacter(character);
         }
 
         public Character GetCharacter(int id) {
-            return _characterRepository.GetCharacter(id);
+            var result = _unitOfWork.CharacterRepository.GetCharacter(id);
+            return result;
         }
 
         public List<Character> GetCharacters() {
-            return _characterRepository.GetCharacters();
-        }
-
-        public Task<int> UpdateCharacterAsync(Character character) {
-            var result = _characterRepository.UpdateCharacterAsync(character);
-
+            var result = _unitOfWork.CharacterRepository.GetCharacters();
             return result;
         }
 
-        public Task<int> VoteForCharacterAsync(Character character) {
-            var result = _characterRepository.VoteForCharacterAsync(character);
+        public void UpdateCharacterAsync(Character character) {
+            var result = _unitOfWork.CharacterRepository.UpdateCharacterAsync(character);
+        }
 
-            return result;
+        public void VoteForCharacterAsync(Character character) {
+            var result = _unitOfWork.CharacterRepository.VoteForCharacterAsync(character);
         }
     }
 }

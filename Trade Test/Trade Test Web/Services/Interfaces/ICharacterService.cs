@@ -3,10 +3,10 @@
 namespace Trade_Test.Services.Interfaces
 {
     public interface ICharacterService {
-        Task<int> AddCharacterAsync(Character character);
+        void AddCharacter(Character character);
         Character GetCharacter(int id);
         List<Character> GetCharacters();
-        Task<int> UpdateCharacterAsync(Character character);
-        Task<int> VoteForCharacterAsync(Character character);
+        void UpdateCharacterAsync(Character character);
+        void VoteForCharacterAsync(Character character);
     }
 }

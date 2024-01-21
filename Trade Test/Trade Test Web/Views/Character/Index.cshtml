@@ -2,18 +2,40 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using Trade_Test.Models;
-@model List<Character>
+@model X.PagedList.IPagedList<Character>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@* @model List<Character> *@
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <a href="@Url.Action("AddCharacter","Character")">Add Character</a>
+
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">
+
+            @using (Html.BeginForm("Index", "Character", FormMethod.Get)) {
+                <p>
+                    Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                    <input type="submit" value="Search" />
+                </p>
+
+            }
+
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>
+                            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
                         <th>Name</th>
                         <th>Vote</th>
+                        <th>
+                            @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
                         <th>Created Date</th>
                         <th>Modified Date</th>
                         <th></th>
@@ -38,6 +60,11 @@
                     }
                 </tbody>
             </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
         </div>
     </div>
 </div>

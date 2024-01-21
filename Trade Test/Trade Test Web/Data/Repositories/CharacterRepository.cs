@@ -10,7 +10,7 @@ namespace Trade_Test.Data.Repositories {
 
         public TradeTestDbContext DbContext { get; }
 
-        public async Task<int> AddCharacterAsync(Character character) {
+        public void AddCharacter(Character character) {
             TblCharacter newCharacter = new() {
                 Name = character.Name,
                 Vote = character.Vote,
@@ -18,10 +18,6 @@ namespace Trade_Test.Data.Repositories {
             };
 
             DbContext.TblCharacters.Add(newCharacter);
-
-            var result = DbContext.SaveChanges();
-
-            return result;
         }
 
         public Character GetCharacter(int id) {
@@ -49,7 +45,7 @@ namespace Trade_Test.Data.Repositories {
             return usersList;
         }
 
-        public async Task<int> UpdateCharacterAsync(Character characterData) {
+        public async Task UpdateCharacterAsync(Character characterData) {
 
             var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
 
@@ -63,13 +59,9 @@ namespace Trade_Test.Data.Repositories {
 
                 DbContext.TblCharacters.Update(savedCharacter);
             }
-
-            var result = await DbContext.SaveChangesAsync();
-
-            return result;
         }
 
-        public async Task<int> VoteForCharacterAsync(Character characterData) {
+        public async Task VoteForCharacterAsync(Character characterData) {
 
             var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
 
@@ -82,10 +74,6 @@ namespace Trade_Test.Data.Repositories {
 
                 DbContext.TblCharacters.Update(savedCharacter);
             }
-
-            var result = await DbContext.SaveChangesAsync();
-
-            return result;
         }
     }
 }
