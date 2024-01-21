@@ -6,5 +6,6 @@ namespace Trade_Test.Data.Repositories.Interfaces
         Task<int> AddUserAsync(User user);
         Task<int> UpdateUserAsync(User user);
         List<User> GetUsers();
+        User GetUser(int id);
     }
 }

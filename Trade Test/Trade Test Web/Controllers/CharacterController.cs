@@ -8,12 +8,12 @@ using X.PagedList;
 
 namespace Trade_Test.Controllers {
     public class CharacterController : Controller {
+
         private readonly ICharacterService _characterService;
 
         public CharacterController(
             ICharacterService characterService
             ) {
-
             _characterService = characterService;
         }
 
@@ -43,21 +43,12 @@ namespace Trade_Test.Controllers {
                                        ).ToList();
             }
 
-            switch (sortOrder) {
-                case "name_desc":
-                    charactersList = charactersList.OrderByDescending(s => s.Name).ToList();
-                    break;
-                case "Date":
-                    charactersList = charactersList.OrderBy(s => s.CreatedDateTime).ToList();
-                    break;
-                case "date_desc":
-                    charactersList = charactersList.OrderByDescending(s => s.CreatedDateTime).ToList();
-                    break;
-                default:
-                    charactersList = charactersList.OrderBy(s => s.Name).ToList();
-                    break;
-            }
-
+            charactersList = sortOrder switch {
+                "name_desc" => charactersList.OrderByDescending(s => s.Name).ToList(),
+                "Date" => charactersList.OrderBy(s => s.CreatedDateTime).ToList(),
+                "date_desc" => charactersList.OrderByDescending(s => s.CreatedDateTime).ToList(),
+                _ => charactersList.OrderBy(s => s.Name).ToList(),
+            };
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 

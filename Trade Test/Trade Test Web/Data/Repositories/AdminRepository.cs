@@ -54,5 +54,20 @@ namespace Trade_Test.Data.Repositories {
 
             return usersList;
         }
+
+        public User GetUser(int id) {
+
+            var savedCharacter = DbContext.Users.First(c => c.Id == id.ToString());
+
+            User result = new();
+
+            if (savedCharacter != null) {
+                result.UserName = savedCharacter.UserName;
+                result.Email = savedCharacter.Email;
+                result.PhoneNumber = savedCharacter.PhoneNumber;
+            }
+
+            return result;
+        }
     }
 }
