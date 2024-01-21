@@ -5,13 +5,12 @@
 @model Character
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
 <div class="container p-3 my-3 border">
     <h1> @ViewBag.PageName</h1>
     <div>
-        <h4>Book</h4>
+        <h4>Disney Character Detail</h4>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -30,18 +29,18 @@
                 <label asp-for="CreatedDateTime"></label>
             </dt>
             <dd class="col-sm-10">
-                @Model.CreatedDateTime.ToString("")
+                @Model.CreatedDateTime.ToString()
             </dd>
             <dt class="col-sm-2">
                 <label asp-for="ModifiedDateTime"></label>
             </dt>
             <dd class="col-sm-10">
-                @Model.ModifiedDateTime.ToShortDateString()
+                @Model.ModifiedDateTime.ToString()
             </dd>
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>|
+        <a asp-action="UpdateCharacter" asp-route-id="@Model.Id">Update Character</a>|
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
