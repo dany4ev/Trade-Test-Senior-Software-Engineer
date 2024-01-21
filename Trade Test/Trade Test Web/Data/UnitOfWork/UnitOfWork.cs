@@ -12,7 +12,6 @@ namespace Trade_Test.Data.UnitOfWork {
     public class UnitOfWork : IUnitOfWork {
         #region Object Initialized
 
-        protected readonly UserManager<User> _userManager;
         protected readonly ApplicationDbContext _applicationDbContext;
         protected readonly TradeTestDbContext _tradeTestDbContext;
         private bool _disposed;
@@ -21,12 +20,10 @@ namespace Trade_Test.Data.UnitOfWork {
 
 
         public UnitOfWork(
-            UserManager<User> userManager,
             ApplicationDbContext ApplicationDbContext,
             TradeTestDbContext TradeTestDbContext
             ) {
 
-            _userManager = userManager;
 
             _applicationDbContext = ApplicationDbContext;
             _applicationDbContext.Database.SetCommandTimeout(999);
@@ -39,7 +36,7 @@ namespace Trade_Test.Data.UnitOfWork {
         public IAdminRepository AdminRepository {
             get
             {
-                _adminRepository ??= new AdminRepository(_applicationDbContext, _userManager);
+                _adminRepository ??= new AdminRepository(_applicationDbContext);
                 return _adminRepository;
             }
         }

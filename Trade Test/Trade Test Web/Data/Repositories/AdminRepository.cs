@@ -11,14 +11,9 @@ using Trade_Test_Web.Models.Enums;
 namespace Trade_Test.Data.Repositories {
     public class AdminRepository : IAdminRepository {
 
-        private readonly UserManager<User> _userManager;
-
         public AdminRepository(
-            ApplicationDbContext dbContext,
-            UserManager<User> userManager
+            ApplicationDbContext dbContext
             ) {
-
-            _userManager = userManager;
             DbContext = dbContext;
         }
 
@@ -26,18 +21,18 @@ namespace Trade_Test.Data.Repositories {
 
         public async Task AddUserAsync(User userData) {
 
-            if (await _userManager.FindByEmailAsync(userData.Email) == null) {
+            User newUser = new() {
+                UserName = userData.UserName,
+                Email = userData.Email,
+                PhoneNumber = userData.PhoneNumber,
+                PasswordHash = userData.PasswordHash
+            };
+            
+            var identityUserData = await DbContext.Users.FindAsync(userData.Email);
 
-                User newUser = new() {
-                    UserName = userData.UserName,
-                    Email = userData.Email,
-                    PhoneNumber = userData.PhoneNumber,
-                    PasswordHash = userData.PasswordHash
-                };
+            if (identityUserData == null) {
 
-                await _userManager.CreateAsync(newUser);
-
-                await _userManager.AddToRoleAsync(newUser, nameof(RoleType.Patron));
+                DbContext.Users.Add(newUser);
             }
         }
 

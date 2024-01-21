@@ -37,6 +37,10 @@ namespace Trade_Test_Web {
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            //            .AddEntityFrameworkStores<ApplicationDbContext>()
+            //            .AddDefaultTokenProviders();
+
             // Note: Add DI registrations for all dependencies here
             builder.Services.RegisterDependencies();
 
@@ -44,15 +48,15 @@ namespace Trade_Test_Web {
             builder.Services.AddControllers().AddNewtonsoftJson();
 
             // Note: Added to allow image/document file uploading
-            builder.Services.Configure<FormOptions>(o => {
-                o.ValueLengthLimit = int.MaxValue; // Limit on individual form values
-                o.MultipartBodyLengthLimit = int.MaxValue; // Limit on form body size
-                o.MemoryBufferThreshold = int.MaxValue; // Limit on form header size
-            });
+            //builder.Services.Configure<FormOptions>(o => {
+            //    o.ValueLengthLimit = int.MaxValue; // Limit on individual form values
+            //    o.MultipartBodyLengthLimit = int.MaxValue; // Limit on form body size
+            //    o.MemoryBufferThreshold = int.MaxValue; // Limit on form header size
+            //});
 
-            builder.Services.Configure<IISServerOptions>(options => {
-                options.MaxRequestBodySize = 73400320; // Limit request size to 70 MB (73400320 bytes)
-            });
+            //builder.Services.Configure<IISServerOptions>(options => {
+            //    options.MaxRequestBodySize = 73400320; // Limit request size to 70 MB (73400320 bytes)
+            //});
 
             var app = builder.Build();
 
@@ -98,7 +102,7 @@ namespace Trade_Test_Web {
 
             using (var scope = app.Services.CreateScope()) {
 
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 string adminUserName = builder.Configuration.GetValue<string>("Admin:UserName");
                 string adminEmail = builder.Configuration.GetValue<string>("Admin:Email");
                 string adminPhoneNumber = builder.Configuration.GetValue<string>("Admin:PhoneNumber");

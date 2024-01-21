@@ -3,20 +3,19 @@
 using Trade_Test.Data.Repositories;
 using Trade_Test.Data.Repositories.Interfaces;
 using Trade_Test.Data.UnitOfWork;
-using Trade_Test.Models;
 using Trade_Test.Services;
 using Trade_Test.Services.Interfaces;
 
-using Trade_Test_Web.Data.EfModels;
 using Trade_Test_Web.Utilities.Middlewares;
 
-namespace Trade_Test.Utilities.Extensions
-{
+namespace Trade_Test.Utilities.Extensions {
     public static class DependencyServiceExtensions
     {
         public static void RegisterDependencies(this IServiceCollection services)
         {
             // Note: Register all your instances and contracts here for Dependency Injection
+            services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICharacterService, CharacterService>();
             services.AddTransient<IAdminService, AdminService>();
@@ -24,10 +23,6 @@ namespace Trade_Test.Utilities.Extensions
             services.AddTransient<ICharacterRepository, CharacterRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
 
-            services.AddTransient<GlobalExceptionHandlingMiddleware>();
-
-            services.AddTransient<UserManager<User>>();
-            services.AddTransient<ApplicationDbContext>();
         }
     }
 }
