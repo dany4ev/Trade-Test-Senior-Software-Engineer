@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Trade_Test.Models;
+@model List<Character>
+@{
+}
+<a href="@Url.Action("AddCharacter","Character")">Add Character</a>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Vote</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null) {
+                        @foreach (var character in Model) {
+                            <tr onclick="setTimeout(() => alert(@character.Name), 3000);">
+                                <td>@character.Name</td>
+                                <td>@character.Vote</td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("UpdateCharacter","Character",new {id=character.Id})">Update Character</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

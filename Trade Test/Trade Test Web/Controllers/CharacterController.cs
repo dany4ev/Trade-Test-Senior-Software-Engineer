@@ -1,83 +1,96 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Trade_Test.Controllers
-{
-    public class CharacterController : Controller
-    {
-        // GET: CharacterController
-        public ActionResult Index()
-        {
+using Trade_Test.Models;
+using Trade_Test.Services;
+using Trade_Test.Services.Interfaces;
+
+namespace Trade_Test.Controllers {
+    public class CharacterController : Controller {
+        private readonly ICharacterService _characterService;
+
+        public CharacterController(
+            ICharacterService characterService
+            ) {
+            _characterService = characterService;
+        }
+
+        public ActionResult Index() {
+
+            var charactersList = _characterService.GetCharacters();
+
+            return View(charactersList);
+        }
+
+
+        public ActionResult AddCharacter() {
+
+            ViewBag.PageName = "Add Character";
+
             return View();
         }
 
-        // GET: CharacterController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: CharacterController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: CharacterController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult AddCharacter([Bind("Id,Name,Vote")] Character character) {
+
+            if (ModelState.IsValid) {
+                try {
+                    _characterService.AddCharacterAsync(character);
+                }
+                catch (DbUpdateConcurrencyException) {
+                    throw;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(character);
         }
 
-        // GET: CharacterController/Edit/5
-        public ActionResult Edit(int id)
-        {
+        public ActionResult UpdateCharacter(int id) {
+
+            ViewBag.PageName = "Update Character";
+
             return View();
         }
 
-        // POST: CharacterController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult UpdateUser([Bind("Id,Name,Vote")] Character character) {
+
+            if (ModelState.IsValid) {
+                try {
+                    _characterService.UpdateCharacterAsync(character);
+                }
+                catch (DbUpdateConcurrencyException) {
+                    throw;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: CharacterController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
+            return View(character);
         }
+                
 
-        // POST: CharacterController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult VoteForCharacter([Bind("Id,Vote")] Character character) {
+
+            if (ModelState.IsValid) {
+                try {
+                    _characterService.VoteForCharacterAsync(character);
+                }
+                catch (DbUpdateConcurrencyException) {
+                    throw;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(character);
         }
     }
 }

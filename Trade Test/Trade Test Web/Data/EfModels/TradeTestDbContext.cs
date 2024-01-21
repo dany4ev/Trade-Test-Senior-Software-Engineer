@@ -9,7 +9,6 @@ namespace Trade_Test.Data.EfModels
                 
         }
 
-        public virtual DbSet<TblUser> Users { get; set; }
         public virtual DbSet<TblCharacter> Characters { get; set; }
     }
 }

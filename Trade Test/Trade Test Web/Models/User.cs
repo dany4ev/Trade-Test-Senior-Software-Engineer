@@ -1,11 +1,9 @@
-﻿namespace Trade_Test.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Trade_Test.Models
 {
-    public class User
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+    public class User : IdentityUser {
+        public string UserName { get; set; }
         public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? Country { get; set; }
     }
 }
