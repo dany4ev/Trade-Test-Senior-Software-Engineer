@@ -6,7 +6,6 @@
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Core
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-@* @model List<Character> *@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -22,29 +21,30 @@
                     Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
                     <input type="submit" value="Search" />
                 </p>
-
             }
 
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>
-                            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>Name</th>
-                        <th>Vote</th>
                         <th>
-                            @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Vote", "Index", new { sortOrder = ViewBag.VoteSortParam, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>Created Date</th>
-                        <th>Modified Date</th>
+                        <th>
+                            @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParam, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th> 
+                            @Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParam, currentFilter = ViewBag.CurrentFilter })
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null) {
                         @foreach (var character in Model) {
-                            <tr onclick="setTimeout(() => alert(@character.Name), 3000);">
+                            <tr>
                                 <td>@character.Name</td>
                                 <td>@character.Vote</td>
                                 <td>@character.CreatedDateTime</td>
@@ -53,7 +53,7 @@
                                     <a class="btn btn-sm btn-primary" href="@Url.Action("UpdateCharacter","Character",new {id=character.Id})">Update Character</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="@Url.Action("CharacterDetail","Character",new {id=character.Id})">Update Character</a>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("CharacterDetail","Character",new {id=character.Id})">View Character</a>
                                 </td>
                             </tr>
                         }

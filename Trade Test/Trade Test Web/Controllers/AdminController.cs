@@ -24,11 +24,11 @@ namespace Trade_Test_Web.Controllers {
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.PageName = "Users List";
+            ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.EmailSortParam = sortOrder == "Email" ? "email_desc" : "email";
+            ViewBag.PhoneNumberSortParam = sortOrder == "PhoneNumber" ? "phonenumber_desc" : "phonenumber";
 
-            List<User>? usersList = _adminService.GetUsers();
-
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            var usersList = _adminService.GetUsers();
 
             if (searchString != null) {
                 page = 1;
@@ -50,8 +50,11 @@ namespace Trade_Test_Web.Controllers {
                 "name_desc" => usersList.OrderByDescending(s => s.UserName).ToList(),
                 "email" => usersList.OrderBy(s => s.Email).ToList(),
                 "email_desc" => usersList.OrderByDescending(s => s.Email).ToList(),
+                "phonenumber" => usersList.OrderBy(s => s.PhoneNumber).ToList(),
+                "phonenumber_desc" => usersList.OrderByDescending(s => s.PhoneNumber).ToList(),
                 _ => usersList.OrderBy(s => s.UserName).ToList(),
             };
+
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 

@@ -1,8 +1,32 @@
-﻿@{
+﻿@using Trade_Test.Models;
+@model X.PagedList.IPagedList<Character>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    
 
+    <h1>Vote for a Disney Character</h1>
+    <p>Click on Character Name to Vote!</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                @if (Model != null) {
+                    @foreach (var character in Model) {
+                        <div class="col-md-4" onclick="setTimeout(() => alert(@character.Name), 3000);">
+                            <div>@character.Name</div>
+                            <div>@character.Vote</div>
+                            <div>@character.CreatedDateTime</div>
+                            <div>@character.ModifiedDateTime</div>
+                        </div>
+                    }
+                }
+                </>
+            </div>
+        </div>
+    </div>
 </div>

@@ -2,21 +2,39 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using Trade_Test.Models;
-@model List<User>
+@model X.PagedList.IPagedList<User>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <a href="@Url.Action("AddUser","Admin")">Add User</a>
+
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">
+
+            @using (Html.BeginForm("Index", "Character", FormMethod.Get)) {
+                <p>
+                    Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                    <input type="submit" value="Search" />
+                </p>
+            }
+
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
+                        <th>
+                            @Html.ActionLink("User Name", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParam, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th>
+                            @Html.ActionLink("PhoneNumber", "Index", new { sortOrder = ViewBag.PhoneNumberSortParam, currentFilter = ViewBag.CurrentFilter })
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -30,11 +48,19 @@
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="@Url.Action("UpdateUser","Admin",new {id=user.Id})">Update User</a>
                                 </td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("UserDetail","Admin",new {id=user.Id})">View User</a>
+                                </td>
                             </tr>
                         }
                     }
                 </tbody>
             </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
         </div>
     </div>
 </div>

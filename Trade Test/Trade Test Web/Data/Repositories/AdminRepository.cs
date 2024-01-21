@@ -1,46 +1,54 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using Trade_Test.Data.EfModels;
 using Trade_Test.Data.Repositories.Interfaces;
 using Trade_Test.Models;
 
 using Trade_Test_Web.Data.EfModels;
+using Trade_Test_Web.Models.Enums;
 
 namespace Trade_Test.Data.Repositories {
     public class AdminRepository : IAdminRepository {
-        public AdminRepository(ApplicationDbContext dbContext) {
+
+        private readonly UserManager<User> _userManager;
+
+        public AdminRepository(
+            ApplicationDbContext dbContext,
+            UserManager<User> userManager
+            ) {
+
+            _userManager = userManager;
             DbContext = dbContext;
         }
 
         public ApplicationDbContext DbContext { get; }
 
-        public async Task<int> AddUserAsync(User userData) {
+        public async Task AddUserAsync(User userData) {
 
-            User newUser = new() {
-                UserName = userData.UserName,
-                Email = userData.Email,
-                PhoneNumber = userData.PhoneNumber
-            };
+            if (await _userManager.FindByEmailAsync(userData.Email) == null) {
 
-            DbContext.Add(newUser);
+                User newUser = new() {
+                    UserName = userData.UserName,
+                    Email = userData.Email,
+                    PhoneNumber = userData.PhoneNumber,
+                    PasswordHash = userData.PasswordHash
+                };
 
-            var result = await DbContext.SaveChangesAsync();
+                await _userManager.CreateAsync(newUser);
 
-            return result;
+                await _userManager.AddToRoleAsync(newUser, nameof(RoleType.Patron));
+            }
         }
 
-        public async Task<int> UpdateUserAsync(User userData) {
+        public async Task UpdateUserAsync(User userData) {
 
             var savedUser = await DbContext.Users.FindAsync(userData.Id);
 
-            if(savedUser != null) {
+            if (savedUser != null) {
                 savedUser = userData;
                 DbContext.Users.Update(savedUser);
             }
-
-            var result = await DbContext.SaveChangesAsync();
-
-            return result;
         }
 
         public List<User> GetUsers() {

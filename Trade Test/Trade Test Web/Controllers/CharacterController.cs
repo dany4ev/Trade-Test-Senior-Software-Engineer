@@ -21,11 +21,11 @@ namespace Trade_Test.Controllers {
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.PageName = "Disney Character List";
+            ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.CreatedDateSortParam = sortOrder == "CreatedDate" ? "createddate_desc" : "CreatedDate";
+            ViewBag.ModifiedDateSortParam = sortOrder == "ModifiedDate" ? "modifieddate_desc" : "ModifiedDate";
 
             var charactersList = _characterService.GetCharacters();
-
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
             if (searchString != null) {
                 page = 1;
@@ -40,15 +40,19 @@ namespace Trade_Test.Controllers {
                 charactersList = charactersList.Where(s => s.Name.Contains(searchString)
                                        || s.Vote.ToString().Contains(searchString)
                                        || s.CreatedDateTime.ToString().Contains(searchString)
+                                       || s.ModifiedDateTime.ToString().Contains(searchString)
                                        ).ToList();
             }
 
             charactersList = sortOrder switch {
                 "name_desc" => charactersList.OrderByDescending(s => s.Name).ToList(),
-                "Date" => charactersList.OrderBy(s => s.CreatedDateTime).ToList(),
-                "date_desc" => charactersList.OrderByDescending(s => s.CreatedDateTime).ToList(),
+                "CreatedDate" => charactersList.OrderBy(s => s.CreatedDateTime).ToList(),
+                "createddate_desc" => charactersList.OrderByDescending(s => s.CreatedDateTime).ToList(),
+                "ModifiedDate" => charactersList.OrderBy(s => s.ModifiedDateTime).ToList(),
+                "modifieddate_desc" => charactersList.OrderByDescending(s => s.ModifiedDateTime).ToList(),
                 _ => charactersList.OrderBy(s => s.Name).ToList(),
             };
+
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
@@ -114,7 +118,7 @@ namespace Trade_Test.Controllers {
 
             return View(character);
         }
-                
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
