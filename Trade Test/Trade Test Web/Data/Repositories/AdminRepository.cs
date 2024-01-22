@@ -52,11 +52,14 @@ namespace Trade_Test.Data.Repositories {
 
         public void UpdateUser(User userData) {
 
-            var savedUser =  DbContext.Users.Find(userData.Id);
+            var savedUser =  DbContext.Users.First(f => f.Id == userData.Id);
 
             if (savedUser != null) {
-                savedUser = userData;
-                DbContext.Users.Update(savedUser);
+                savedUser.UserName = userData.UserName;
+                savedUser.Email = userData.Email;
+                savedUser.PhoneNumber = userData.PhoneNumber;
+
+                DbContext.SaveChanges();
             }
         }
 

@@ -106,7 +106,7 @@ namespace Trade_Test.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateCharacter([Bind("Id,Name,Vote")] Character character) {
+        public ActionResult UpdateCharacter(int id, [Bind("Id,Name,Vote")] Character character) {
 
             if (ModelState.IsValid) {
                 try {

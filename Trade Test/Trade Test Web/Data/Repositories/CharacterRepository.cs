@@ -1,4 +1,6 @@
-﻿using Trade_Test.Data.EfModels;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Trade_Test.Data.EfModels;
 using Trade_Test.Data.Repositories.Interfaces;
 using Trade_Test.Models;
 
@@ -50,17 +52,14 @@ namespace Trade_Test.Data.Repositories {
         public void UpdateCharacter(Character characterData) {
 
             try {
-                var savedCharacter =  DbContext.TblCharacters.Find(characterData.Id);
+                var savedCharacter = DbContext.TblCharacters.First(f=>f.Id == characterData.Id);
 
                 if (savedCharacter != null) {
 
-                    savedCharacter = new TblCharacter {
-                        Name = savedCharacter.Name,
-                        Vote = savedCharacter.Vote,
-                        ModifiedDateTime = DateTime.Now
-                    };
+                    savedCharacter.Name = characterData.Name;
+                    savedCharacter.Vote = characterData.Vote;
+                    savedCharacter.ModifiedDateTime = DateTime.Now;
 
-                    DbContext.TblCharacters.Update(savedCharacter);
                     DbContext.SaveChanges();
                 }
             }
