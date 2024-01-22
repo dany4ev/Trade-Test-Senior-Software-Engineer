@@ -3,8 +3,8 @@
 namespace Trade_Test.Services.Interfaces
 {
     public interface IAdminService {
-        Task AddUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        void AddUser(User user);
+        void UpdateUser(User user);
         List<User> GetUsers();
         User GetUser(int id);
     }

@@ -11,14 +11,15 @@ namespace Trade_Test.Data.Repositories {
             DbContext = dbContext;
         }
 
-        public async Task AddCharacterAsync(Character character) {
+        public void AddCharacter(Character character) {
             TblCharacter newCharacter = new() {
                 Name = character.Name,
                 Vote = character.Vote,
                 CreatedDateTime = DateTime.Now,
             };
 
-            await DbContext.TblCharacters.AddAsync(newCharacter);
+            DbContext.TblCharacters.Add(newCharacter);
+            DbContext.SaveChanges();
         }
 
         public Character GetCharacter(int id) {
@@ -46,10 +47,10 @@ namespace Trade_Test.Data.Repositories {
             return result;
         }
 
-        public async Task UpdateCharacterAsync(Character characterData) {
+        public void UpdateCharacter(Character characterData) {
 
             try {
-                var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
+                var savedCharacter =  DbContext.TblCharacters.Find(characterData.Id);
 
                 if (savedCharacter != null) {
 
@@ -60,6 +61,7 @@ namespace Trade_Test.Data.Repositories {
                     };
 
                     DbContext.TblCharacters.Update(savedCharacter);
+                    DbContext.SaveChanges();
                 }
             }
             catch (Exception ex) {
@@ -68,9 +70,9 @@ namespace Trade_Test.Data.Repositories {
             }
         }
 
-        public async Task VoteForCharacterAsync(Character characterData) {
+        public void VoteForCharacter(Character characterData) {
 
-            var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
+            var savedCharacter = DbContext.TblCharacters.Find(characterData.Id);
 
             if (savedCharacter != null) {
 
@@ -78,6 +80,7 @@ namespace Trade_Test.Data.Repositories {
                 savedCharacter.ModifiedDateTime = DateTime.Now;
 
                 DbContext.TblCharacters.Update(savedCharacter);
+                DbContext.SaveChanges();
             }
         }
     }

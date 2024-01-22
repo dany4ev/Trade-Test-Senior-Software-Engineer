@@ -3,8 +3,8 @@
 namespace Trade_Test.Data.Repositories.Interfaces
 {
     public interface IAdminRepository {
-        Task AddUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        void AddUser(User user);
+        void UpdateUser(User user);
         List<User> GetUsers();
         User GetUser(int id);
     }

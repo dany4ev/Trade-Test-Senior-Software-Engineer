@@ -88,28 +88,27 @@ namespace Trade_Test_Web {
                 }
             }
 
-            using (var scope = app.Services.CreateScope()) {
+            //using (var scope = app.Services.CreateScope()) {
 
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                string adminUserName = builder.Configuration.GetValue<string>("Admin:UserName");
-                string adminEmail = builder.Configuration.GetValue<string>("Admin:Email");
-                string adminPhoneNumber = builder.Configuration.GetValue<string>("Admin:PhoneNumber");
-                string adminPassword = builder.Configuration.GetValue<string>("Admin:Password");
+            //    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            //    string adminUserName = builder.Configuration.GetValue<string>("Admin:UserName");
+            //    string adminEmail = builder.Configuration.GetValue<string>("Admin:Email");
+            //    string adminPhoneNumber = builder.Configuration.GetValue<string>("Admin:PhoneNumber");
+            //    string adminPassword = builder.Configuration.GetValue<string>("Admin:Password");
 
-                if (await userManager.FindByEmailAsync(adminEmail) == null) {
+            //    if (await userManager.FindByEmailAsync(adminEmail) == null) {
 
-                    User newUser = new() {
-                        UserName = adminUserName,
-                        Email = adminEmail,
-                        PhoneNumber = adminPhoneNumber,
-                        PasswordHash = adminPassword
-                    };
+            //        User newUser = new() {
+            //            UserName = adminUserName,
+            //            Email = adminEmail,
+            //            PhoneNumber = adminPhoneNumber,
+            //            PasswordHash = adminPassword
+            //        };
 
-                    await userManager.CreateAsync(newUser);
-
-                    await userManager.AddToRoleAsync(newUser, nameof(RoleType.Admin));
-                }
-            }
+            //        await userManager.CreateAsync(newUser);
+            //        await userManager.AddToRoleAsync(newUser, nameof(RoleType.Admin));
+            //    }
+            //}
 
             app.Run();
         }

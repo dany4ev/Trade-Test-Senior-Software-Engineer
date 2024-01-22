@@ -1,7 +1,10 @@
-﻿using Trade_Test.Data.Repositories.Interfaces;
+﻿using Microsoft.AspNetCore.Identity;
+
+using Trade_Test.Data.Repositories.Interfaces;
 using Trade_Test.Models;
 
 using Trade_Test_Web.Data.EfModels;
+using Trade_Test_Web.Models.Enums;
 
 namespace Trade_Test.Data.Repositories {
     public class AdminRepository : IAdminRepository {
@@ -14,21 +17,31 @@ namespace Trade_Test.Data.Repositories {
             DbContext = dbContext;
         }
 
-        public async Task AddUserAsync(User userData) {
+        public void AddUser(User userData) {
 
             try {
-                User newUser = new() {
-                    UserName = userData.UserName,
-                    Email = userData.Email,
-                    PhoneNumber = userData.PhoneNumber,
-                    PasswordHash = userData.PasswordHash
-                };
-
-                var identityUserData = await DbContext.Users.FindAsync(userData.Email);
+                var identityUserData = DbContext.Users.Find(userData.Email);
+                var role = DbContext.Roles.FirstOrDefault(f => f.Name.Equals(nameof(RoleType.Admin)));
 
                 if (identityUserData == null) {
 
-                    DbContext.Users.Add(newUser);
+                    DbContext.Users.Add(new() {
+                        Id = userData.Id,
+                        UserName = userData.UserName,
+                        Email = userData.Email,
+                        PhoneNumber = userData.PhoneNumber,
+                        PasswordHash = userData.PasswordHash
+                    });
+
+                    if(role != null) {
+
+                        DbContext.UserRoles.Add(new IdentityUserRole<string>() {
+                            RoleId = role.Id,
+                            UserId = userData.Id
+                        });
+                    }
+
+                    DbContext.SaveChanges();
                 }
             }
             catch (Exception ex) {
@@ -37,9 +50,9 @@ namespace Trade_Test.Data.Repositories {
             }
         }
 
-        public async Task UpdateUserAsync(User userData) {
+        public void UpdateUser(User userData) {
 
-            var savedUser = await DbContext.Users.FindAsync(userData.Id);
+            var savedUser =  DbContext.Users.Find(userData.Id);
 
             if (savedUser != null) {
                 savedUser = userData;

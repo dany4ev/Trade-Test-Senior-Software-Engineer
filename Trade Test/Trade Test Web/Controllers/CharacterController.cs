@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Trade_Test.Models;
@@ -7,6 +8,8 @@ using Trade_Test.Services.Interfaces;
 using X.PagedList;
 
 namespace Trade_Test.Controllers {
+
+    //[Authorize(Roles = "Admin")]
     public class CharacterController : Controller {
 
         private readonly ICharacterService _characterService;
@@ -82,7 +85,7 @@ namespace Trade_Test.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    _characterService.AddCharacterAsync(character);
+                    _characterService.AddCharacter(character);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;
@@ -107,7 +110,7 @@ namespace Trade_Test.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    _characterService.UpdateCharacterAsync(character);
+                    _characterService.UpdateCharacter(character);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;

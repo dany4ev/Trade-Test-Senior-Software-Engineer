@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Trade_Test.Models;
-using Trade_Test.Services;
 using Trade_Test.Services.Interfaces;
 
 using X.PagedList;
 
 namespace Trade_Test_Web.Controllers {
+
+    //[Authorize(Roles = "Admin")]
     public class AdminController : Controller {
 
         private readonly IAdminService _adminService;
 
         public AdminController(
             IAdminService adminService
-            )
-        {
-            _adminService = adminService;    
+            ) {
+            _adminService = adminService;
         }
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page) {
@@ -83,7 +83,7 @@ namespace Trade_Test_Web.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    _adminService.AddUserAsync(user);
+                    _adminService.AddUser(user);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;
@@ -105,10 +105,10 @@ namespace Trade_Test_Web.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateUser([Bind("Id,UserName,Email,PhoneNumber")] User user) {
-           
+
             if (ModelState.IsValid) {
                 try {
-                    _adminService.UpdateUserAsync(user);
+                    _adminService.UpdateUser(user);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;

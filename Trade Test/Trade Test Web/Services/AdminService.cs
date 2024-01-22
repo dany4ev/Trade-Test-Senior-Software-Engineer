@@ -11,14 +11,12 @@ namespace Trade_Test.Services {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddUserAsync(User user) {
-            await _unitOfWork.AdminRepository.AddUserAsync(user);
-            await _unitOfWork.SaveAsync();
+        public void AddUser(User user) {
+             _unitOfWork.AdminRepository.AddUser(user);
         }
 
-        public async Task UpdateUserAsync(User user) {
-            await _unitOfWork.AdminRepository.UpdateUserAsync(user);
-            await _unitOfWork.SaveAsync();
+        public void UpdateUser(User user) {
+            _unitOfWork.AdminRepository.UpdateUser(user);
         }
 
         public List<User> GetUsers() {

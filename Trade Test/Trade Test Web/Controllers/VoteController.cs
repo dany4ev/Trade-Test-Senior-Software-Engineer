@@ -25,7 +25,7 @@ namespace Trade_Test_Web.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    _characterService.VoteForCharacterAsync(character);
+                    _characterService.VoteForCharacter(character);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;

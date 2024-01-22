@@ -51,7 +51,7 @@
                                 <td>@character.CreatedDateTime</td>
                                 <td>@character.ModifiedDateTime</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" asp-action="UpdateCharacter" asp-controller="Character" type="submit">Update Character</button>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("UpdateCharacter","Character",new {id=character.Id})">Update Character</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="@Url.Action("CharacterDetail","Character",new {id=character.Id})">View Character</a>
