@@ -2,10 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using System.Text.Json
-@using Trade_Test.Models;
+@using Trade_Test.Models
+@model List<Character>
 
 @{
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container p-3 my-3 border">
@@ -13,7 +14,9 @@
 
     <div class="row">
         <div class="col-sm-6">
-			<div id="chartContainer" style="height: 500px; width: 50%;"></div>
+            <div id="chartContainer" style="height: 500px; width: 50%;"></div>
+
+            <div id="chartContainer2" style="height: 500px; width: 50%;"></div>
         </div>
     </div>
 </div>
@@ -21,22 +24,69 @@
 
 <script src="~/lib/canvasjs/canvasjs.js"></script>
 <script type="text/javascript">
-	window.onload = function () {
-		var chart = new CanvasJS.Chart("chartContainer", {
-			data: [
-				{
-					type: "column",
-					dataPoints: [
-						{ x: 10, y: 10 },
-						{ x: 20, y: 15 },
-						{ x: 30, y: 25 },
-						{ x: 40, y: 30 },
-						{ x: 50, y: 28 }
-					]
-				}
-			]
-		});
+    window.onload = function () {
 
-		chart.render();
-	}
+        var chart = new CanvasJS.Chart("chartContainer", {
+            data: [
+                {
+                    type: "column",
+                    dataPoints: [
+                        { x: 10, y: 10 },
+                        { x: 20, y: 15 },
+                        { x: 30, y: 25 },
+                        { x: 40, y: 30 },
+                        { x: 50, y: 28 }
+                    ]
+                }
+            ]
+        });
+        chart.render();
+
+        var model = JSON.parse('@Json.Serialize(Model)');
+        console.log(model);
+
+        var dates = model.filter(f => f.createdDateTime != null).map(m => new Date(m.createdDateTime))
+        let date1 = dates[0];
+        let date2 = dates[dates.length - 1];
+
+        // Calculating the time difference
+        // of two dates
+        let Difference_In_Time =
+            date2.getTime() - date1.getTime();
+
+        // Calculating the no. of days between
+        // two dates
+        let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+
+        // To display the final no. of days (result)
+        var result1 = "Total number of days between dates:\n" +
+            date1.toDateString() + " and " +
+            date2.toDateString() + " is: " + Difference_In_Days + " days";
+        console.log(result1);
+
+        var result2 = model.sort((a, b) => b.vote - a.vote).map(m => m.vote).reduce((p, n) => p + n);
+        console.log("Total no of votes over time: " + result2);
+
+        model.forEach(m => {
+            console.log("Character: " + m.name + " has accumulated votes: " + m.vote);
+        });
+
+
+        var top5Items = model.sort((a, b) => b.vote - a.vote).slice(0, 5);
+        console.log("Top 5 most popular Disney Characters are: ");
+        top5Items.map(m => m.name).forEach((f) => {
+            console.log(f + "\n");
+        });
+
+
+        // var chart2 = new CanvasJS.chart("chartContainer2", {
+        // 	data: [
+        // 		{
+        // 			type:"column",
+        // 			dataPoints: dataPoints2
+        // 		}
+        // 	]
+        // });
+        // chart2.render();
+    }
 </script>
