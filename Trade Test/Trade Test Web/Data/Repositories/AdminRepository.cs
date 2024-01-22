@@ -33,7 +33,7 @@ namespace Trade_Test.Data.Repositories {
                         PasswordHash = userData.PasswordHash
                     });
 
-                    if(role != null) {
+                    if (role != null) {
 
                         DbContext.UserRoles.Add(new IdentityUserRole<string>() {
                             RoleId = role.Id,
@@ -52,7 +52,7 @@ namespace Trade_Test.Data.Repositories {
 
         public void UpdateUser(User userData) {
 
-            var savedUser =  DbContext.Users.First(f => f.Id == userData.Id);
+            var savedUser = DbContext.Users.First(f => f.Id == userData.Id);
 
             if (savedUser != null) {
                 savedUser.UserName = userData.UserName;
@@ -75,19 +75,16 @@ namespace Trade_Test.Data.Repositories {
             return usersList;
         }
 
-        public User GetUser(int id) {
+        public User GetUser(Guid id) {
 
-            var savedCharacter = DbContext.Users.First(c => c.Id == id.ToString());
+            var savedCharacter = DbContext.Users.Where(c => c.Id == id.ToString()).Select(s => new User {
+                Id = s.Id,
+                UserName = s.UserName,
+                Email = s.Email,
+                PhoneNumber = s.PhoneNumber
+            }).First();
 
-            User result = new();
-
-            if (savedCharacter != null) {
-                result.UserName = savedCharacter.UserName;
-                result.Email = savedCharacter.Email;
-                result.PhoneNumber = savedCharacter.PhoneNumber;
-            }
-
-            return result;
+            return savedCharacter;
         }
     }
 }

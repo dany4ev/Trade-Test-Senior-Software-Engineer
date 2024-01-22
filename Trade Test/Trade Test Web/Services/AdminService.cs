@@ -24,7 +24,7 @@ namespace Trade_Test.Services {
             return result;
         }
 
-        public User GetUser(int id) {
+        public User GetUser(Guid id) {
             var result = _unitOfWork.AdminRepository.GetUser(id);
             return result;
         }

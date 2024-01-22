@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 using Trade_Test.Models;
 using Trade_Test.Services.Interfaces;
+using Trade_Test.Utilities.Extensions;
 
 using X.PagedList;
 
 namespace Trade_Test_Web.Controllers {
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller {
 
         private readonly IAdminService _adminService;
@@ -61,11 +62,11 @@ namespace Trade_Test_Web.Controllers {
             return View(usersList.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult UserDetail(int id) {
+        public ActionResult UserDetail(string id) {
 
             ViewBag.PageName = "User Detail";
 
-            var character = _adminService.GetUser(id);
+            var character = _adminService.GetUser(id.AsGuid());
 
             return View(character);
         }

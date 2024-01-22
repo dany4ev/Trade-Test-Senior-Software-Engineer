@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Trade_Test.Models;
+@model User
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-3 my-3 border">
+    <h1> @ViewBag.PageName</h1>
+    <div>
+        <h4>User Detail</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                <label asp-for="UserName"></label>
+            </dt>
+            <dd class="col-sm-10">
+                @Model.UserName
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="Email"></label>
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Email
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="PhoneNumber"></label>
+            </dt>
+            <dd class="col-sm-10">
+                @Model.PhoneNumber
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="UpdateUser" asp-route-id="@Model.Id">Update User</a>|
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace Trade_Test.Controllers {
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class CharacterController : Controller {
 
         private readonly ICharacterService _characterService;

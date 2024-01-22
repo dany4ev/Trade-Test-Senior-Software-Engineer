@@ -6,6 +6,6 @@ namespace Trade_Test.Services.Interfaces
         void AddUser(User user);
         void UpdateUser(User user);
         List<User> GetUsers();
-        User GetUser(int id);
+        User GetUser(Guid id);
     }
 }
