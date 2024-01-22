@@ -27,7 +27,7 @@ namespace Trade_Test.Data.UnitOfWork {
 
             _applicationDbContext = ApplicationDbContext;
             _applicationDbContext.Database.SetCommandTimeout(999);
-         
+
             _tradeTestDbContext = TradeTestDbContext;
             _tradeTestDbContext.Database.SetCommandTimeout(999);
         }
@@ -55,17 +55,17 @@ namespace Trade_Test.Data.UnitOfWork {
         #region Save Method
 
         public async Task<bool> SaveAsync() {
-            var transactionResult = false;
 
-            using (var transaction = await _tradeTestDbContext.Database.BeginTransactionAsync()) {
-                try {
-                    var result = await _tradeTestDbContext.SaveChangesAsync();
-                    transaction.Commit();
-                    transactionResult = result > 0;
-                }
-                catch (Exception ex) {
-                    await transaction.RollbackAsync();
-                }
+            var transactionResult = false;
+            var transaction = await _tradeTestDbContext.Database.BeginTransactionAsync();
+
+            try {
+                var result = await _tradeTestDbContext.SaveChangesAsync();
+                transaction.Commit();
+                transactionResult = result > 0;
+            }
+            catch (Exception ex) {
+                await transaction.RollbackAsync();
             }
 
             return transactionResult;

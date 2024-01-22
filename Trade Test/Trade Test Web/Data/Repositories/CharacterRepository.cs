@@ -11,14 +11,14 @@ namespace Trade_Test.Data.Repositories {
             DbContext = dbContext;
         }
 
-        public void AddCharacter(Character character) {
+        public async Task AddCharacterAsync(Character character) {
             TblCharacter newCharacter = new() {
                 Name = character.Name,
                 Vote = character.Vote,
                 CreatedDateTime = DateTime.Now,
             };
 
-            DbContext.TblCharacters.Add(newCharacter);
+            await DbContext.TblCharacters.AddAsync(newCharacter);
         }
 
         public Character GetCharacter(int id) {
@@ -36,29 +36,35 @@ namespace Trade_Test.Data.Repositories {
         }
 
         public List<Character> GetCharacters() {
-            var usersList = DbContext.TblCharacters.Select(s => new Character {
+            var result = DbContext.TblCharacters.Select(s => new Character {
                 Id = s.Id,
                 Name = s.Name,
                 Vote = s.Vote,
                 CreatedDateTime = s.CreatedDateTime
             }).ToList();
 
-            return usersList;
+            return result;
         }
 
         public async Task UpdateCharacterAsync(Character characterData) {
 
-            var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
+            try {
+                var savedCharacter = await DbContext.TblCharacters.FindAsync(characterData.Id);
 
-            if (savedCharacter != null) {
+                if (savedCharacter != null) {
 
-                savedCharacter = new TblCharacter {
-                    Name = savedCharacter.Name,
-                    Vote = savedCharacter.Vote,
-                    ModifiedDateTime = DateTime.Now
-                };
+                    savedCharacter = new TblCharacter {
+                        Name = savedCharacter.Name,
+                        Vote = savedCharacter.Vote,
+                        ModifiedDateTime = DateTime.Now
+                    };
 
-                DbContext.TblCharacters.Update(savedCharacter);
+                    DbContext.TblCharacters.Update(savedCharacter);
+                }
+            }
+            catch (Exception ex) {
+
+                throw;
             }
         }
 

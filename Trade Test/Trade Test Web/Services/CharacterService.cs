@@ -13,9 +13,9 @@ namespace Trade_Test.Services {
             _unitOfWork = unitOfWork;
         }
 
-        public void AddCharacter(Character character) {
-            _unitOfWork.CharacterRepository.AddCharacter(character);
-            _unitOfWork.SaveAsync();
+        public async Task AddCharacterAsync(Character character) {
+            await _unitOfWork.CharacterRepository.AddCharacterAsync(character);
+            await _unitOfWork.SaveAsync();
         }
 
         public Character GetCharacter(int id) {
@@ -28,12 +28,12 @@ namespace Trade_Test.Services {
             return result;
         }
 
-        public async void UpdateCharacterAsync(Character character) {
-            await  _unitOfWork.CharacterRepository.UpdateCharacterAsync(character);
+        public async Task UpdateCharacterAsync(Character character) {
+            await _unitOfWork.CharacterRepository.UpdateCharacterAsync(character);
             await _unitOfWork.SaveAsync();
         }
 
-        public async void VoteForCharacterAsync(Character character) {
+        public async Task VoteForCharacterAsync(Character character) {
             await _unitOfWork.CharacterRepository.VoteForCharacterAsync(character);
             await _unitOfWork.SaveAsync();
         }

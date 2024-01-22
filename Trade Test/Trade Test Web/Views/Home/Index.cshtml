@@ -1,7 +1,6 @@
-﻿@using Trade_Test.Models;
-@model X.PagedList.IPagedList<Character>
-@using X.PagedList.Mvc;
-@using X.PagedList.Mvc.Core
+﻿@using System.Text.Json
+@using Trade_Test.Models;
+@model List<Character>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewData["Title"] = "Home Page";
@@ -16,17 +15,60 @@
         <div class="col-md-12">
             <div class="table-responsive">
                 @if (Model != null) {
-                    @foreach (var character in Model) {
-                        <div class="col-md-4" onclick="setTimeout(() => alert(@character.Name), 3000);">
-                            <div>@character.Name</div>
-                            <div>@character.Vote</div>
-                            <div>@character.CreatedDateTime</div>
-                            <div>@character.ModifiedDateTime</div>
-                        </div>
-                    }
+                    <form>
+                        @foreach (var character in Model) {
+                            <div class="col-md-4" id="'@character.Name'+'_'+'@character.Id'" onclick="handleClick(@JsonSerializer.Serialize(character))">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">@character.Name</h5>
+                                            <small></small>
+                                        </div>
+                                        <p class="mb-1">@character.Vote</p>
+                                        <small>@character.CreatedDateTime</small>
+                                        <small>@character.ModifiedDateTime</small>
+                                    </a>
+                                </div>
+                                <br />
+                            </div>
+                        }
+                    </form>
                 }
                 </>
             </div>
         </div>
     </div>
 </div>
+
+<script src="~/lib/jquery/jquery.js"></script>
+<script>
+
+
+    function handleClick(character) {
+        
+        alert(`Name:${character.Name}, Vote:${Number(character.Vote)}`);
+
+        setTimeout(() => {
+
+            const uri = `api/Vote/VoteForCharacter`;
+            let dto = { name: character.Name, vote: parseInt(character.Vote) + 1 };
+            let stringified = JSON.stringify(dto);
+
+            $.ajax({
+                type: "POST",
+                url: uri,
+                data: stringified,
+                success: function (response) {
+                    alert("success");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        }, 3000);
+    }
+</script>

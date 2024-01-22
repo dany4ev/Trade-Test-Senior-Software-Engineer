@@ -82,7 +82,7 @@ namespace Trade_Test.Controllers {
 
             if (ModelState.IsValid) {
                 try {
-                    _characterService.AddCharacter(character);
+                    _characterService.AddCharacterAsync(character);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;
@@ -103,30 +103,11 @@ namespace Trade_Test.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateUser([Bind("Id,Name,Vote")] Character character) {
+        public ActionResult UpdateCharacter([Bind("Id,Name,Vote")] Character character) {
 
             if (ModelState.IsValid) {
                 try {
                     _characterService.UpdateCharacterAsync(character);
-                }
-                catch (DbUpdateConcurrencyException) {
-                    throw;
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(character);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult VoteForCharacter([Bind("Id,Vote")] Character character) {
-
-            if (ModelState.IsValid) {
-                try {
-                    _characterService.VoteForCharacterAsync(character);
                 }
                 catch (DbUpdateConcurrencyException) {
                     throw;
