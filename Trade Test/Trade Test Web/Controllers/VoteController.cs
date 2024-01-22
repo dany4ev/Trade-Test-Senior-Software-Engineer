@@ -6,7 +6,7 @@ using Trade_Test.Services.Interfaces;
 
 namespace Trade_Test_Web.Controllers {
 
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class VoteController : ControllerBase {
 
@@ -17,6 +17,8 @@ namespace Trade_Test_Web.Controllers {
             ) {
             _characterService = characterService;
         }
+
+        public string GetString() => "Danish Farman";
 
         [HttpPost]
         public Character VoteForCharacter(Character character) {

@@ -74,10 +74,8 @@ namespace Trade_Test.Data.Repositories {
 
             if (savedCharacter != null) {
 
-                savedCharacter = new TblCharacter {
-                    Vote = savedCharacter.Vote,
-                    ModifiedDateTime = DateTime.Now
-                };
+                savedCharacter.Vote = characterData.Vote;
+                savedCharacter.ModifiedDateTime = DateTime.Now;
 
                 DbContext.TblCharacters.Update(savedCharacter);
             }

@@ -16,7 +16,7 @@ namespace Trade_Test.Utilities.Extensions {
             // Note: Register all your instances and contracts here for Dependency Injection
             services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICharacterService, CharacterService>();
             services.AddTransient<IAdminService, AdminService>();
 

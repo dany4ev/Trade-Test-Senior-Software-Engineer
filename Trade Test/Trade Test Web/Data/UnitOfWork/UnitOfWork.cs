@@ -57,8 +57,8 @@ namespace Trade_Test.Data.UnitOfWork {
         public async Task<bool> SaveAsync() {
 
             var transactionResult = false;
-            var transaction = await _tradeTestDbContext.Database.BeginTransactionAsync();
 
+            using var transaction = await _tradeTestDbContext.Database.BeginTransactionAsync();
             try {
                 var result = await _tradeTestDbContext.SaveChangesAsync();
                 transaction.Commit();

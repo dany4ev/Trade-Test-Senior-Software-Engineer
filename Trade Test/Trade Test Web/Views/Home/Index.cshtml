@@ -15,24 +15,22 @@
         <div class="col-md-12">
             <div class="table-responsive">
                 @if (Model != null) {
-                    <form>
-                        @foreach (var character in Model) {
-                            <div class="col-md-4" id="'@character.Name'+'_'+'@character.Id'" onclick="handleClick(@JsonSerializer.Serialize(character))">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">@character.Name</h5>
-                                            <small></small>
-                                        </div>
-                                        <p class="mb-1">@character.Vote</p>
-                                        <small>@character.CreatedDateTime</small>
-                                        <small>@character.ModifiedDateTime</small>
-                                    </a>
-                                </div>
-                                <br />
+                    @foreach (var character in Model) {
+                        <div class="col-md-4" id="'@character.Name'+'_'+'@character.Id'" onclick="handleClick(@JsonSerializer.Serialize(character))">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@character.Name</h5>
+                                        <small></small>
+                                    </div>
+                                    <p class="mb-1">@character.Vote</p>
+                                    <small>@character.CreatedDateTime</small>
+                                    <small>@character.ModifiedDateTime</small>
+                                </a>
                             </div>
-                        }
-                    </form>
+                            <br />
+                        </div>
+                    }
                 }
                 </>
             </div>
@@ -45,27 +43,31 @@
 
 
     function handleClick(character) {
-        
-        alert(`Name:${character.Name}, Vote:${Number(character.Vote)}`);
 
+        alert(`Name:${character.Name}, Vote:${Number(character.Vote)}`);
+       
         setTimeout(() => {
 
-            const uri = `api/Vote/VoteForCharacter`;
-            let dto = { name: character.Name, vote: parseInt(character.Vote) + 1 };
+            let dto = {
+                id: character.Id,
+                name: character.Name,
+                vote: parseInt(character.Vote) + 1
+            };
             let stringified = JSON.stringify(dto);
 
             $.ajax({
                 type: "POST",
-                url: uri,
+                url: 'api/Vote/VoteForCharacter',
                 data: stringified,
+                contentType: 'application/json; charset=utf-8',
                 success: function (response) {
-                    alert("success");
+                    alert(JSON.stringify(response));
                 },
                 failure: function (response) {
-                    alert(response.responseText);
+                    alert("failure");
                 },
                 error: function (response) {
-                    alert(response.responseText);
+                    alert("error");
                 }
             });
 
